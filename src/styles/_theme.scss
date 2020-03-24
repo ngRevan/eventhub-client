@@ -1,0 +1,8 @@
+@import '~@angular/material/theming';
+
+$primary-palette: mat-palette($mat-blue, 800);
+$secondary-palette: mat-palette($mat-blue-grey, 600);
+$material-theme: mat-light-theme($primary-palette, $secondary-palette);
+$warn: map-get($material-theme, warn);
+$background: map-get($material-theme, background);
+$typography-config: mat-typography-config();

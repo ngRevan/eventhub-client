@@ -1,0 +1,16 @@
+@import '~@angular/material/theming';
+@import 'pre-loader';
+@import 'theme';
+
+@include mat-core($typography-config);
+@include angular-material-theme($material-theme);
+@include pre-loader-theme($material-theme);
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
