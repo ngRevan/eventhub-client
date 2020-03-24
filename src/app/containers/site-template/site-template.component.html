@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
-  <div>
+  <button type="button" mat-button (click)="sidenav.toggle()">
     Event Hub
-  </div>
+  </button>
   <div class="spacing"></div>
   <div class="actions">
     <button mat-button (click)="signOut()">
@@ -9,4 +9,13 @@
     </button>
   </div>
 </mat-toolbar>
-<router-outlet> </router-outlet>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" [opened]="true">
+    <app-navigation></app-navigation>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

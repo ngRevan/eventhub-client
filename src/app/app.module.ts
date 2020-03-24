@@ -17,13 +17,21 @@ import { SignInOidcPageComponent } from './containers/sign-in-oidc-page/sign-in-
 import { SiteTemplateComponent } from './containers/site-template/site-template.component';
 import { SharedModule } from './shared/shared.module';
 import { AboutPageComponent } from './containers/about-page/about-page.component';
+import { NavigationComponent } from './containers/navigation/navigation.component';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
 }
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent, SignInOidcPageComponent, SiteTemplateComponent, AboutPageComponent],
+  declarations: [
+    AppComponent,
+    HomePageComponent,
+    SignInOidcPageComponent,
+    SiteTemplateComponent,
+    AboutPageComponent,
+    NavigationComponent,
+  ],
   imports: [
     BrowserModule,
     SharedModule,
