@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -11,12 +11,16 @@ export class AuthorizedGuard implements CanActivate {
   constructor(private oidcSecurityService: OidcSecurityService) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
-    return this.oidcSecurityService.getIsAuthorized().pipe(
+    return this.isAuthorized().pipe(
       tap(isAuthorized => {
         if (!isAuthorized) {
           this.oidcSecurityService.authorize();
         }
       })
     );
+  }
+
+  private isAuthorized(): Observable<boolean> {
+    return this.oidcSecurityService.getIsAuthorized().pipe(take(1));
   }
 }
