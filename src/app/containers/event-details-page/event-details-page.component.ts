@@ -12,19 +12,23 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class EventDetailsPageComponent implements OnInit {
   private eventId: string;
+  event: EventModel;
 
   constructor(private readonly service: EventService, private readonly route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => (this.eventId = params.get('eventId')));
+    this.route.paramMap.subscribe(params => {
+      this.eventId = params.get('eventId');
+      this.getEvent();
+    });
   }
 
   onSubmit(model: EventModel): void {
-    if (this.eventId) {
-      model.id = this.eventId;
-      this.service.put(model).subscribe(response => console.log(response));
-    } else {
-      this.service.post(model).subscribe(response => console.log(response));
-    }
+    model.id = this.eventId;
+    this.service.update(model).subscribe(response => console.log(response));
+  }
+
+  private getEvent() {
+    this.service.getById(this.eventId).subscribe(event => (this.event = event));
   }
 }

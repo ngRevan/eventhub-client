@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EventModel } from 'src/app/core/models/event.model';
 
@@ -9,6 +9,7 @@ import { EventModel } from 'src/app/core/models/event.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventFormComponent implements OnInit {
+  @Input() eventModel: EventModel;
   @Output() eventFormSubmit = new EventEmitter<EventModel>();
 
   currentDate: Date = new Date();
@@ -21,7 +22,11 @@ export class EventFormComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.eventModel) {
+      this.eventForm.patchValue(this.eventModel);
+    }
+  }
 
   onSubmit(): void {
     if (this.eventForm.valid) {
