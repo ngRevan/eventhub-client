@@ -7,6 +7,7 @@ import { SignInOidcPageComponent } from './containers/sign-in-oidc-page/sign-in-
 import { RedirectAuthorizedGuard } from './guards/redirect-authorized.guard';
 import { AuthorizedGuard } from './guards/authorized.guard';
 import { SiteTemplateComponent } from './containers/site-template/site-template.component';
+import { EventDetailsPageComponent } from './containers/event-details-page/event-details-page.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'about' },
@@ -17,7 +18,11 @@ const routes: Routes = [
     path: '',
     component: SiteTemplateComponent,
     canActivate: [AuthorizedGuard],
-    children: [{ path: 'home', component: HomePageComponent }],
+    children: [
+      { path: 'home', component: HomePageComponent },
+      { path: 'event', component: EventDetailsPageComponent },
+      { path: 'event/:eventId', component: EventDetailsPageComponent },
+    ],
   },
   { path: '**', redirectTo: 'about' },
 ];

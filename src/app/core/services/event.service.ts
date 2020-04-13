@@ -8,7 +8,7 @@ import { EventModel } from '../models/event.model';
   providedIn: 'root',
 })
 export class EventService {
-  private apiUrl = `${environment.apiUrl}Event/`;
+  private apiUrl = `${environment.apiUrl}Events/`;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -25,10 +25,10 @@ export class EventService {
   }
 
   public put(model: EventModel): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}updateEvent`, model);
+    return this.http.put<void>(`${this.apiUrl}updateEvent`, model, { params: { eventId: model.id } });
   }
 
-  public delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}deleteEvent`);
+  public delete(eventId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}deleteEvent`, { params: { eventId } });
   }
 }

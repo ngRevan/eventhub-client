@@ -1,0 +1,40 @@
+<div class="container">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input type="text" matInput formControlName="name" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Start date time</mat-label>
+          <input matInput [min]="currentDate" [matDatepicker]="startDateTimePicker" formControlName="startDateTime" />
+          <mat-datepicker-toggle matSuffix [for]="startDateTimePicker"></mat-datepicker-toggle>
+          <mat-datepicker #startDateTimePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>End date time</mat-label>
+          <input
+            matInput
+            [min]="startDateTimeValue"
+            [matDatepicker]="endDateTimePicker"
+            formControlName="endDateTime"
+          />
+          <mat-datepicker-toggle matSuffix [for]="endDateTimePicker"></mat-datepicker-toggle>
+          <mat-datepicker #endDateTimePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <button type="submit" mat-raised-button>
+          Save
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

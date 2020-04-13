@@ -18,6 +18,9 @@ import { SiteTemplateComponent } from './containers/site-template/site-template.
 import { SharedModule } from './shared/shared.module';
 import { AboutPageComponent } from './containers/about-page/about-page.component';
 import { NavigationComponent } from './containers/navigation/navigation.component';
+import { EventDetailsPageComponent } from './containers/event-details-page/event-details-page.component';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { EventFormComponent } from './components/event-form/event-form.component';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
@@ -31,6 +34,8 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     SiteTemplateComponent,
     AboutPageComponent,
     NavigationComponent,
+    EventDetailsPageComponent,
+    EventFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,6 +44,7 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     HttpClientModule,
     AuthModule.forRoot(),
     BrowserAnimationsModule,
+    MatNativeDateModule,
   ],
   providers: [
     OidcConfigService,
@@ -48,6 +54,7 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
       deps: [OidcConfigService],
       multi: true,
     },
+    { provide: MAT_DATE_LOCALE, useValue: 'de-CH' },
   ],
   bootstrap: [AppComponent],
 })

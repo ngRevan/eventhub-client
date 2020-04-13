@@ -1,0 +1,13 @@
+.container {
+  margin-top: 4rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  form {
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+}
