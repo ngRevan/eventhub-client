@@ -21,8 +21,9 @@ import { NavigationComponent } from './containers/navigation/navigation.componen
 import { EventDetailsPageComponent } from './containers/event-details-page/event-details-page.component';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { EventFormComponent } from './components/event-form/event-form.component';
-import { EventCreatePageComponent } from './containers/event-create-page/event-create-page.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { EventDialogCreateComponent } from './components/event-dialog-create/event-dialog-create.component';
+import { EventDialogUpdateComponent } from './components/event-dialog-update/event-dialog-update.component';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
@@ -38,7 +39,8 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     NavigationComponent,
     EventDetailsPageComponent,
     EventFormComponent,
-    EventCreatePageComponent,
+    EventDialogCreateComponent,
+    EventDialogUpdateComponent,
   ],
   imports: [
     BrowserModule,

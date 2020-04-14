@@ -30,7 +30,10 @@ export class EventFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.eventForm.valid) {
-      this.eventFormSubmit.emit(this.eventForm.value);
+      this.eventFormSubmit.emit({
+        ...this.eventView,
+        ...this.eventForm.value,
+      });
     }
   }
 

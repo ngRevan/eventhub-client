@@ -1,13 +1,13 @@
 <mat-list role="list">
   <mat-list-item role="listitem">
-    <a type="button" mat-raised-button [routerLink]="['/event']">Create Event</a>
+    <a type="button" mat-raised-button (click)="openEventFormDialog()">Create Event</a>
   </mat-list-item>
   <mat-list-item role="listitem">
     <a type="button" mat-raised-button>Join Event</a>
   </mat-list-item>
 </mat-list>
 
-<mat-nav-list>
+<mat-nav-list *ngIf="events$ | async as events">
   <div mat-subheader>Current Events</div>
   <a *ngFor="let event of events" mat-list-item [routerLink]="['/event', event.id]">
     {{ event.name }}

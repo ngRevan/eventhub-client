@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { EventService } from 'src/app/core/services/event.service';
 import { ActivatedRoute } from '@angular/router';
 import { EventView } from 'src/app/core/models/event-view';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-event-details-page',
@@ -10,24 +11,18 @@ import { EventView } from 'src/app/core/models/event-view';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventDetailsPageComponent implements OnInit {
-  private eventId: string;
-  event: EventView;
+  event$: Observable<EventView>;
 
   constructor(private readonly service: EventService, private readonly route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.eventId = params.get('eventId');
-      this.getEvent();
+      const eventId = params.get('eventId');
+      this.event$ = this.service.getById(eventId);
     });
   }
 
   onSubmit(model: EventView): void {
-    model.id = this.eventId;
     this.service.update(model).subscribe(response => console.log(response));
-  }
-
-  private getEvent() {
-    this.service.getById(this.eventId).subscribe(event => (this.event = event));
   }
 }
