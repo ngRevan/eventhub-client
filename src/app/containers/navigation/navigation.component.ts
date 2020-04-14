@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { EventService } from 'src/app/core/services/event.service';
-import { EventModel } from 'src/app/core/models/event.model';
+import { EventView } from 'src/app/core/models/event-view';
 
 @Component({
   selector: 'app-navigation',
@@ -9,7 +9,7 @@ import { EventModel } from 'src/app/core/models/event.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent implements OnInit {
-  events: EventModel[];
+  events: EventView[];
 
   constructor(private readonly eventService: EventService) {}
 

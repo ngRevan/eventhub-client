@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,6 +22,7 @@ import { EventDetailsPageComponent } from './containers/event-details-page/event
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { EventCreatePageComponent } from './containers/event-create-page/event-create-page.component';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
@@ -57,6 +58,7 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
       multi: true,
     },
     OidcSecurityService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'de-CH' },
   ],
   bootstrap: [AppComponent],
@@ -69,7 +71,7 @@ export class AppModule {
         redirect_url: 'https://localhost:4200/signin-oidc',
         client_id: 'EventHub',
         response_type: 'code',
-        scope: 'openid profile',
+        scope: 'openid profile EventHub.Web.ApiAPI',
         post_logout_redirect_uri: 'https://localhost:4200/signout-callback-oidc',
         post_login_route: '/home',
         start_checksession: false,

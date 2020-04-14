@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EventService } from 'src/app/core/services/event.service';
-import { EventModel } from 'src/app/core/models/event.model';
 import { ActivatedRoute } from '@angular/router';
+import { EventView } from 'src/app/core/models/event-view';
 
 @Component({
   selector: 'app-event-details-page',
@@ -12,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class EventDetailsPageComponent implements OnInit {
   private eventId: string;
-  event: EventModel;
+  event: EventView;
 
   constructor(private readonly service: EventService, private readonly route: ActivatedRoute) {}
 
@@ -23,7 +22,7 @@ export class EventDetailsPageComponent implements OnInit {
     });
   }
 
-  onSubmit(model: EventModel): void {
+  onSubmit(model: EventView): void {
     model.id = this.eventId;
     this.service.update(model).subscribe(response => console.log(response));
   }
