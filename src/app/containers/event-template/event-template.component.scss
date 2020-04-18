@@ -1,3 +1,11 @@
 .container {
   margin: 2rem;
+
+  .spacing {
+    flex: 1 1 auto;
+  }
+
+  .mat-card-content {
+    margin-top: 2rem;
+  }
 }

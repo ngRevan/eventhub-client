@@ -10,18 +10,11 @@ import { MatDialogRef } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventDialogUpdateComponent implements OnInit {
-  constructor(
-    private readonly service: EventService,
-    private readonly dialogRef: MatDialogRef<EventDialogUpdateComponent>
-  ) {}
+  constructor(private readonly service: EventService) {}
 
   ngOnInit(): void {}
 
-  cancel(): void {
-    this.dialogRef.close();
-  }
-
   onSubmit(model: EventView): void {
-    this.service.update(model).subscribe(() => this.dialogRef.close());
+    this.service.update(model).subscribe();
   }
 }
