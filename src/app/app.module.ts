@@ -24,6 +24,11 @@ import { EventFormComponent } from './components/event-form/event-form.component
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { EventDialogCreateComponent } from './components/event-dialog-create/event-dialog-create.component';
 import { EventDialogUpdateComponent } from './components/event-dialog-update/event-dialog-update.component';
+import { EventViewComponent } from './components/event-view/event-view.component';
+import { EventTemplateComponent } from './containers/event-template/event-template.component';
+import { EventChatPageComponent } from './containers/event-chat-page/event-chat-page.component';
+import { EventResourcesPageComponent } from './containers/event-resources-page/event-resources-page.component';
+import { EventMembersPageComponent } from './containers/event-members-page/event-members-page.component';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
@@ -41,6 +46,11 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     EventFormComponent,
     EventDialogCreateComponent,
     EventDialogUpdateComponent,
+    EventViewComponent,
+    EventTemplateComponent,
+    EventChatPageComponent,
+    EventResourcesPageComponent,
+    EventMembersPageComponent,
   ],
   imports: [
     BrowserModule,

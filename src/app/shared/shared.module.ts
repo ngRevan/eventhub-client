@@ -17,6 +17,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const AngularMaterialModules = [
   MatSidenavModule,
@@ -34,6 +36,8 @@ const AngularMaterialModules = [
   MatDatepickerModule,
   MatDialogModule,
   MatCardModule,
+  MatTabsModule,
+  MatSnackBarModule,
 ];
 
 @NgModule({

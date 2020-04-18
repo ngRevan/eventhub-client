@@ -1,26 +1,6 @@
-<div class="container">
-  <div class="item">
-    <mat-card *ngIf="eventView$ | async as eventView; else loading">
-      <mat-card-header>
-        <mat-card-title>{{ eventView.name }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          Von: <strong>{{ eventView.startDateTime | date: 'medium' }}</strong>
-        </p>
-        <p>
-          Bis: <strong>{{ eventView.endDateTime | date: 'medium' }}</strong>
-        </p>
-        <p>
-          {{ eventView.description }}
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>Update</button>
-      </mat-card-actions>
-    </mat-card>
-    <ng-template #loading>
-      <mat-spinner></mat-spinner>
-    </ng-template>
-  </div>
-</div>
+<ng-container *ngIf="eventView$ | async as eventView; else loading">
+  <app-event-view [eventView]="eventView"></app-event-view>
+</ng-container>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>

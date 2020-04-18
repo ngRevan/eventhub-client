@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { EventService } from 'src/app/core/services/event.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventView } from 'src/app/core/models/event-view';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-event-details-page',
@@ -13,7 +14,12 @@ import { Observable, BehaviorSubject, Subject } from 'rxjs';
 export class EventDetailsPageComponent implements OnInit, OnDestroy {
   eventView$ = new Subject<EventView>();
 
-  constructor(private readonly service: EventService, private readonly route: ActivatedRoute) {}
+  constructor(
+    private readonly service: EventService,
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -29,6 +35,13 @@ export class EventDetailsPageComponent implements OnInit, OnDestroy {
 
   onSubmit(model: EventView): void {
     this.service.update(model).subscribe(response => console.log(response));
+  }
+
+  onDelete(eventId: string) {
+    this.service.delete(eventId).subscribe(() => {
+      this.snackBar.open('Event deleted.');
+      this.router.navigate(['/']);
+    });
   }
 
   ngOnDestroy(): void {

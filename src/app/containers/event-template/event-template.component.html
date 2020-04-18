@@ -1,0 +1,22 @@
+<div class="container">
+  <mat-card>
+    <nav mat-tab-nav-bar>
+      <a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['.']">
+        Description
+      </a>
+      <a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['chat']">
+        Chat
+      </a>
+      <a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['resources']">
+        Resources
+      </a>
+      <a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['members']">
+        Members
+      </a>
+    </nav>
+
+    <mat-card-content>
+      <router-outlet></router-outlet>
+    </mat-card-content>
+  </mat-card>
+</div>
