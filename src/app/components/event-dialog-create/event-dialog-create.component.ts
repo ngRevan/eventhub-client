@@ -17,10 +17,6 @@ export class EventDialogCreateComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  cancel(): void {
-    this.dialogRef.close();
-  }
-
   onSubmit(model: EventView): void {
     this.service.create(model).subscribe(() => this.dialogRef.close());
   }
