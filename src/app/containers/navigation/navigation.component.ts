@@ -1,4 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { EventService } from 'src/app/core/services/event.service';
+import { EventView } from 'src/app/core/models/event-view';
+import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { EventDialogCreateComponent } from 'src/app/components/event-dialog-create/event-dialog-create.component';
 
 @Component({
   selector: 'app-navigation',
@@ -7,7 +12,15 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent implements OnInit {
-  constructor() {}
+  events$: Observable<EventView[]>;
 
-  ngOnInit(): void {}
+  constructor(private readonly dialog: MatDialog, private readonly eventService: EventService) {}
+
+  ngOnInit(): void {
+    this.events$ = this.eventService.getEvents();
+  }
+
+  openEventFormDialog() {
+    this.dialog.open(EventDialogCreateComponent);
+  }
 }

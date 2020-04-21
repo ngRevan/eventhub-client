@@ -1,0 +1,6 @@
+<ng-container *ngIf="eventView$ | async as eventView; else loading">
+  <app-event-view [eventView]="eventView"></app-event-view>
+</ng-container>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>

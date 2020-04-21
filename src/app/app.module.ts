@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,6 +18,17 @@ import { SiteTemplateComponent } from './containers/site-template/site-template.
 import { SharedModule } from './shared/shared.module';
 import { AboutPageComponent } from './containers/about-page/about-page.component';
 import { NavigationComponent } from './containers/navigation/navigation.component';
+import { EventDetailsPageComponent } from './containers/event-details-page/event-details-page.component';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { EventFormComponent } from './components/event-form/event-form.component';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { EventDialogCreateComponent } from './components/event-dialog-create/event-dialog-create.component';
+import { EventDialogUpdateComponent } from './components/event-dialog-update/event-dialog-update.component';
+import { EventViewComponent } from './components/event-view/event-view.component';
+import { EventTemplateComponent } from './containers/event-template/event-template.component';
+import { EventChatPageComponent } from './containers/event-chat-page/event-chat-page.component';
+import { EventResourcesPageComponent } from './containers/event-resources-page/event-resources-page.component';
+import { EventMembersPageComponent } from './containers/event-members-page/event-members-page.component';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
@@ -31,6 +42,15 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     SiteTemplateComponent,
     AboutPageComponent,
     NavigationComponent,
+    EventDetailsPageComponent,
+    EventFormComponent,
+    EventDialogCreateComponent,
+    EventDialogUpdateComponent,
+    EventViewComponent,
+    EventTemplateComponent,
+    EventChatPageComponent,
+    EventResourcesPageComponent,
+    EventMembersPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,6 +59,7 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     HttpClientModule,
     AuthModule.forRoot(),
     BrowserAnimationsModule,
+    MatNativeDateModule,
   ],
   providers: [
     OidcConfigService,
@@ -48,6 +69,9 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
       deps: [OidcConfigService],
       multi: true,
     },
+    OidcSecurityService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'de-CH' },
   ],
   bootstrap: [AppComponent],
 })
@@ -59,7 +83,7 @@ export class AppModule {
         redirect_url: 'https://localhost:4200/signin-oidc',
         client_id: 'EventHub',
         response_type: 'code',
-        scope: 'openid profile',
+        scope: 'openid profile EventHub.Web.ApiAPI',
         post_logout_redirect_uri: 'https://localhost:4200/signout-callback-oidc',
         post_login_route: '/home',
         start_checksession: false,
