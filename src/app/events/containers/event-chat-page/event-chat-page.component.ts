@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
-import { MessageListComponent } from 'src/app/components/message-list/message-list.component';
 import { MessageView } from 'src/app/core/models/message-view';
 import { ChatHubService } from 'src/app/core/services/chat-hub.service';
 import { EventService } from 'src/app/core/services/event.service';
+import { MessageListComponent } from 'src/app/events/components/message-list/message-list.component';
 
 @Component({
   selector: 'app-event-chat-page',
@@ -17,12 +17,9 @@ export class EventChatPageComponent implements OnInit, OnDestroy {
   private currentEventId = '';
   private pageNumber = 1;
   private readonly pageSize = 50;
-  private readonly messagesSubject = new BehaviorSubject<MessageView[]>([]);
-  private readonly destroySubject = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
-  get messages$(): Observable<MessageView[]> {
-    return this.messagesSubject.asObservable();
-  }
+  readonly messages$ = new BehaviorSubject<MessageView[]>([]);
 
   @ViewChild(MessageListComponent, { static: true, read: ElementRef })
   scrollableContainer: ElementRef<HTMLElement>;
@@ -39,16 +36,16 @@ export class EventChatPageComponent implements OnInit, OnDestroy {
     this.chatHubService
       .getMessages()
       .pipe(
-        takeUntil(this.destroySubject),
+        takeUntil(this.destroy$),
         filter(message => message.eventId === this.currentEventId)
       )
       .subscribe(message => {
-        this.messagesSubject.next([...this.messagesSubject.value, message]);
+        this.messages$.next([...this.messages$.value, message]);
       });
 
     this.route.paramMap
       .pipe(
-        takeUntil(this.destroySubject),
+        takeUntil(this.destroy$),
         map(params => params.get('eventId') as string),
         distinctUntilChanged()
       )
@@ -67,15 +64,15 @@ export class EventChatPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.chatHubService.disconnect();
-    this.destroySubject.next();
-    this.destroySubject.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private gatherMessages(pageNumber: number = 1): void {
     this.eventService
       .getEventMessages(this.currentEventId, { pageNumber, pageSize: this.pageSize })
       .subscribe(result => {
-        this.messagesSubject.next([...result.items, ...this.messagesSubject.value]);
+        this.messages$.next([...result.items, ...this.messages$.value]);
         this.pageNumber = result.pageNumber;
       });
   }
@@ -87,7 +84,7 @@ export class EventChatPageComponent implements OnInit, OnDestroy {
   }
 
   private clear(): void {
-    this.messagesSubject.next([]);
+    this.messages$.next([]);
     this.chatHubService.leaveEventChat(this.currentEventId);
   }
 }

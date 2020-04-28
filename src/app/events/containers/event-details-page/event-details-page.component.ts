@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { EventService } from 'src/app/core/services/event.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { EventView } from 'src/app/core/models/event-view';
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { EventView } from 'src/app/core/models/event-view';
+import { EventService } from 'src/app/core/services/event.service';
 
 @Component({
   selector: 'app-event-details-page',

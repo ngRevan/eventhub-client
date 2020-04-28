@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EventFormComponent } from 'src/app/components/event-form/event-form.component';
 import { EventView } from 'src/app/core/models/event-view';
 import { EventService } from 'src/app/core/services/event.service';
+import { EventFormComponent } from 'src/app/events/components/event-form/event-form.component';
 
 export interface EventDialogUpdateData {
   eventView: EventView;

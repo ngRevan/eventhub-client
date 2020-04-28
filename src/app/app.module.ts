@@ -1,5 +1,6 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -12,26 +13,14 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AboutPageComponent } from './containers/about-page/about-page.component';
 import { HomePageComponent } from './containers/home-page/home-page.component';
+import { NavigationComponent } from './containers/navigation/navigation.component';
 import { SignInOidcPageComponent } from './containers/sign-in-oidc-page/sign-in-oidc-page.component';
 import { SiteTemplateComponent } from './containers/site-template/site-template.component';
-import { SharedModule } from './shared/shared.module';
-import { AboutPageComponent } from './containers/about-page/about-page.component';
-import { NavigationComponent } from './containers/navigation/navigation.component';
-import { EventDetailsPageComponent } from './containers/event-details-page/event-details-page.component';
-import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
-import { EventFormComponent } from './components/event-form/event-form.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-import { EventDialogCreateComponent } from './containers/event-dialog-create/event-dialog-create.component';
-import { EventDialogUpdateComponent } from './containers/event-dialog-update/event-dialog-update.component';
-import { EventViewComponent } from './components/event-view/event-view.component';
-import { EventTemplateComponent } from './containers/event-template/event-template.component';
-import { EventChatPageComponent } from './containers/event-chat-page/event-chat-page.component';
-import { EventResourcesPageComponent } from './containers/event-resources-page/event-resources-page.component';
-import { EventMembersPageComponent } from './containers/event-members-page/event-members-page.component';
-import { MessageFormComponent } from './components/message-form/message-form.component';
-import { MessageListComponent } from './components/message-list/message-list.component';
-import { MessageEntryComponent } from './components/message-entry/message-entry.component';
+import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
@@ -45,18 +34,6 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     SiteTemplateComponent,
     AboutPageComponent,
     NavigationComponent,
-    EventDetailsPageComponent,
-    EventFormComponent,
-    EventDialogCreateComponent,
-    EventDialogUpdateComponent,
-    EventViewComponent,
-    EventTemplateComponent,
-    EventChatPageComponent,
-    EventResourcesPageComponent,
-    EventMembersPageComponent,
-    MessageFormComponent,
-    MessageListComponent,
-    MessageEntryComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,6 +43,7 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     AuthModule.forRoot(),
     BrowserAnimationsModule,
     MatNativeDateModule,
+    CoreModule.forRoot(),
   ],
   providers: [
     OidcConfigService,

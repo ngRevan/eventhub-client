@@ -1,15 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { EventService } from 'src/app/core/services/event.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
+import { EventView } from 'src/app/core/models/event-view';
+import { EventService } from 'src/app/core/services/event.service';
 import {
   EventDialogUpdateComponent,
   EventDialogUpdateData,
-} from 'src/app/containers/event-dialog-update/event-dialog-update.component';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { EventView } from 'src/app/core/models/event-view';
-import { map, switchMap, distinctUntilChanged, takeUntil, filter } from 'rxjs/operators';
+} from 'src/app/events/containers/event-dialog-update/event-dialog-update.component';
 
 @Component({
   selector: 'app-event-template',

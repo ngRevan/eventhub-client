@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { EventService } from 'src/app/core/services/event.service';
-import { EventView } from 'src/app/core/models/event-view';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { EventDialogCreateComponent } from 'src/app/containers/event-dialog-create/event-dialog-create.component';
+import { Observable } from 'rxjs';
+import { EventView } from 'src/app/core/models/event-view';
+import { EventService } from 'src/app/core/services/event.service';
+import { EventDialogCreateComponent } from 'src/app/events/containers/event-dialog-create/event-dialog-create.component';
 
 @Component({
   selector: 'app-navigation',
