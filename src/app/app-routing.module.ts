@@ -28,7 +28,8 @@ const routes: Routes = [
         path: 'event/:eventId',
         component: EventTemplateComponent,
         children: [
-          { path: '', component: EventDetailsPageComponent },
+          { path: '', pathMatch: 'full', redirectTo: 'details' },
+          { path: 'details', component: EventDetailsPageComponent },
           { path: 'chat', component: EventChatPageComponent },
           { path: 'resources', component: EventResourcesPageComponent },
           { path: 'members', component: EventMembersPageComponent },
@@ -40,7 +41,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { paramsInheritanceStrategy: 'always' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

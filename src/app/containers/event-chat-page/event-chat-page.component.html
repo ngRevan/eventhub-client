@@ -1,1 +1,6 @@
-<p>event-chat-page works!</p>
+<mat-card>
+  <app-message-list cdkScrollable mat-card-content [messages]="messages$ | async"></app-message-list>
+  <mat-card-footer>
+    <app-message-form (send)="sendMessage($event)"></app-message-form>
+  </mat-card-footer>
+</mat-card>

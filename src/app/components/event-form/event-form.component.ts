@@ -38,6 +38,6 @@ export class EventFormComponent implements OnInit {
   }
 
   get startDateTimeValue(): Date {
-    return this.eventForm.get('startDateTime').value;
+    return this.eventForm.get('startDateTime')!.value;
   }
 }

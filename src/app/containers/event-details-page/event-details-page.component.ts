@@ -23,7 +23,7 @@ export class EventDetailsPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.getEvent(params.get('eventId'));
+      this.getEvent(params.get('eventId') as string);
     });
   }
 

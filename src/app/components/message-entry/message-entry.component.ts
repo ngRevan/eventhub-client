@@ -1,0 +1,17 @@
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { MessageView } from 'src/app/core/models/message-view';
+
+@Component({
+  selector: 'app-message-entry',
+  templateUrl: './message-entry.component.html',
+  styleUrls: ['./message-entry.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MessageEntryComponent implements OnInit {
+  @Input()
+  message: MessageView;
+
+  constructor() {}
+
+  ngOnInit(): void {}
+}
