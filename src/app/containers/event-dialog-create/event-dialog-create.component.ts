@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { EventView } from 'src/app/core/models/event-view';
 import { EventService } from 'src/app/core/services/event.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { EventFormComponent } from 'src/app/components/event-form/event-form.component';
 
 @Component({
   selector: 'app-event-dialog-create',
@@ -10,6 +11,9 @@ import { MatDialogRef } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventDialogCreateComponent implements OnInit {
+  @ViewChild(EventFormComponent)
+  eventForm: EventFormComponent;
+
   constructor(
     private readonly service: EventService,
     public readonly dialogRef: MatDialogRef<EventDialogCreateComponent>

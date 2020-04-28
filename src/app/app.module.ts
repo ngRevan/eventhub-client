@@ -22,13 +22,16 @@ import { EventDetailsPageComponent } from './containers/event-details-page/event
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-import { EventDialogCreateComponent } from './components/event-dialog-create/event-dialog-create.component';
-import { EventDialogUpdateComponent } from './components/event-dialog-update/event-dialog-update.component';
+import { EventDialogCreateComponent } from './containers/event-dialog-create/event-dialog-create.component';
+import { EventDialogUpdateComponent } from './containers/event-dialog-update/event-dialog-update.component';
 import { EventViewComponent } from './components/event-view/event-view.component';
 import { EventTemplateComponent } from './containers/event-template/event-template.component';
 import { EventChatPageComponent } from './containers/event-chat-page/event-chat-page.component';
 import { EventResourcesPageComponent } from './containers/event-resources-page/event-resources-page.component';
 import { EventMembersPageComponent } from './containers/event-members-page/event-members-page.component';
+import { MessageFormComponent } from './components/message-form/message-form.component';
+import { MessageListComponent } from './components/message-list/message-list.component';
+import { MessageEntryComponent } from './components/message-entry/message-entry.component';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
@@ -51,6 +54,9 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     EventChatPageComponent,
     EventResourcesPageComponent,
     EventMembersPageComponent,
+    MessageFormComponent,
+    MessageListComponent,
+    MessageEntryComponent,
   ],
   imports: [
     BrowserModule,

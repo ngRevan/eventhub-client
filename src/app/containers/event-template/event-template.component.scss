@@ -1,11 +1,44 @@
-.container {
-  margin: 2rem;
-
-  .spacing {
-    flex: 1 1 auto;
-  }
-
-  .mat-card-content {
-    margin-top: 2rem;
-  }
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: white;
 }
+
+.mat-toolbar {
+  background-color: white;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.nav-container {
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  position: relative;
+}
+// .container {
+//   margin: 2rem;
+
+//   .nav-container {
+//     display: flex;
+//     flex-direction: row;
+//     box-sizing: border-box;
+
+//     .nav {
+//       flex: 1 1 auto;
+//     }
+
+//     .nav-menu {
+//       margin-left: 8px;
+//     }
+//   }
+
+//   .mat-card-content {
+//     margin-top: 2rem;
+//   }
+// }

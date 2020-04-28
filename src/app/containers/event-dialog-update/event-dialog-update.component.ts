@@ -1,7 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EventFormComponent } from 'src/app/components/event-form/event-form.component';
 import { EventView } from 'src/app/core/models/event-view';
 import { EventService } from 'src/app/core/services/event.service';
-import { MatDialogRef } from '@angular/material/dialog';
+
+export interface EventDialogUpdateData {
+  eventView: EventView;
+}
 
 @Component({
   selector: 'app-event-dialog-update',
@@ -10,7 +15,10 @@ import { MatDialogRef } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventDialogUpdateComponent implements OnInit {
-  constructor(private readonly service: EventService) {}
+  @ViewChild(EventFormComponent)
+  eventForm: EventFormComponent;
+
+  constructor(private readonly service: EventService, @Inject(MAT_DIALOG_DATA) readonly data: EventDialogUpdateData) {}
 
   ngOnInit(): void {}
 

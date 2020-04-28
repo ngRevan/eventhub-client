@@ -1,39 +1,37 @@
-<div class="container">
-  <mat-card>
-    <nav mat-tab-nav-bar>
-      <a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['.']">
-        Description
+<ng-container *ngIf="eventView$ | async as eventView">
+  <mat-toolbar class="mat-elevation-z1">
+    <div>
+      {{ eventView.name }}
+    </div>
+    <button class="nav-menu" mat-icon-button [matMenuTriggerFor]="appMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div class="nav-container">
+    <div class="nav" mat-tab-nav-bar>
+      <a
+        *ngFor="let link of links"
+        mat-tab-link
+        routerLinkActive
+        #rla="routerLinkActive"
+        [active]="rla.isActive"
+        [routerLink]="link.path"
+      >
+        {{ link.label }}
       </a>
-      <a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['chat']">
-        Chat
-      </a>
-      <a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['resources']">
-        Resources
-      </a>
-      <a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" [routerLink]="['members']">
-        Members
-      </a>
-
-      <div class="spacing"></div>
-
-      <button mat-icon-button [matMenuTriggerFor]="appMenu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-    </nav>
-
-    <mat-card-content>
-      <router-outlet></router-outlet>
-    </mat-card-content>
-  </mat-card>
-</div>
-
-<mat-menu #appMenu="matMenu">
-  <button mat-menu-item (click)="onEdit()">
-    <mat-icon>edit</mat-icon>
-    Edit
-  </button>
-  <button mat-menu-item (click)="onDelete()">
-    <mat-icon>delete</mat-icon>
-    Delete
-  </button>
-</mat-menu>
+    </div>
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  <mat-menu #appMenu="matMenu">
+    <button mat-menu-item (click)="onEdit()">
+      <mat-icon>edit</mat-icon>
+      Edit
+    </button>
+    <button mat-menu-item (click)="onDelete()">
+      <mat-icon>delete</mat-icon>
+      Delete
+    </button>
+  </mat-menu>
+</ng-container>

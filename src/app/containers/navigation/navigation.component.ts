@@ -3,7 +3,7 @@ import { EventService } from 'src/app/core/services/event.service';
 import { EventView } from 'src/app/core/models/event-view';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { EventDialogCreateComponent } from 'src/app/components/event-dialog-create/event-dialog-create.component';
+import { EventDialogCreateComponent } from 'src/app/containers/event-dialog-create/event-dialog-create.component';
 
 @Component({
   selector: 'app-navigation',

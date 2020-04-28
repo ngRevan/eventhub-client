@@ -1,0 +1,9 @@
+form {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+
+  .message-input {
+    flex: 1 1 auto;
+  }
+}
