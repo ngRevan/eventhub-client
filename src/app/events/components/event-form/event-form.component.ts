@@ -16,8 +16,8 @@ export class EventFormComponent implements OnInit {
   eventForm = new FormGroup({
     name: new FormControl('', Validators.required),
     description: new FormControl(''),
-    startDateTime: new FormControl(new Date(), Validators.required),
-    endDateTime: new FormControl(new Date(), Validators.required),
+    startDate: new FormControl(new Date(), Validators.required),
+    endDate: new FormControl(new Date(), Validators.required),
   });
 
   constructor() {}
@@ -37,11 +37,11 @@ export class EventFormComponent implements OnInit {
     }
   }
 
-  get startDateTimeValue(): Date {
-    return this.eventForm.get('startDateTime')!.value;
+  get startDateValue(): Date {
+    return this.eventForm.get('startDate')!.value;
   }
 
-  get endDateTimeValue(): Date {
-    return this.eventForm.get('endDateTime')!.value;
+  get endDateValue(): Date {
+    return this.eventForm.get('endDate')!.value;
   }
 }

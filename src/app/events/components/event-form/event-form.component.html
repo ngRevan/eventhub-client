@@ -5,17 +5,17 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Start date time</mat-label>
-    <input matInput [max]="endDateTimeValue" [matDatepicker]="startDateTimePicker" formControlName="startDateTime" />
-    <mat-datepicker-toggle matSuffix [for]="startDateTimePicker"></mat-datepicker-toggle>
-    <mat-datepicker #startDateTimePicker></mat-datepicker>
+    <mat-label>Start date</mat-label>
+    <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" />
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>End date time</mat-label>
-    <input matInput [min]="startDateTimeValue" [matDatepicker]="endDateTimePicker" formControlName="endDateTime" />
-    <mat-datepicker-toggle matSuffix [for]="endDateTimePicker"></mat-datepicker-toggle>
-    <mat-datepicker #endDateTimePicker></mat-datepicker>
+    <mat-label>End date</mat-label>
+    <input matInput [min]="startDateValue" [matDatepicker]="endDatePicker" formControlName="endDate" />
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field>
