@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { Subject } from 'rxjs';
-import { filter, takeUntil, map } from 'rxjs/operators';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { filter, takeUntil, map, take } from 'rxjs/operators';
 import { MessageListComponent } from 'src/app/events/components/message-list/message-list.component';
 
 import { ChatActions } from '../../actions';
@@ -18,7 +18,10 @@ export class EventChatPageComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   readonly messages$ = this.store.select(getChatMessages);
-  readonly currentUserId$ = this.securityService.getUserData().pipe(map(data => data.sub));
+  readonly currentUserId$ = this.securityService.getUserData().pipe(
+    filter(data => !!data),
+    map(data => data.sub)
+  );
 
   @ViewChild(MessageListComponent, { static: true, read: ElementRef })
   scrollableContainer: ElementRef<HTMLElement>;
