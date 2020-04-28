@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { EventView } from '../models/event-view';
-import { v4 as uuidv4 } from 'uuid';
 import { PagedListResult } from '../models/paged-list-result';
 import { MessageView } from '../models/message-view';
 
@@ -19,12 +18,23 @@ export class EventService {
     return this.http.get<EventView[]>(`${this.apiUrl}`);
   }
 
+  getMemberEvents(): Observable<EventView[]> {
+    return this.http.get<EventView[]>(this.apiUrl, {
+      params: {
+        isMember: 'true',
+      },
+    });
+  }
+
   getById(eventId: string): Observable<EventView> {
     return this.http.get<EventView>(`${this.apiUrl}${eventId}`);
   }
 
+  isMember(eventId: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}${eventId}/isMember`);
+  }
+
   create(model: EventView): Observable<void> {
-    model.id = uuidv4();
     return this.http.post<void>(`${this.apiUrl}`, model);
   }
 

@@ -6,7 +6,7 @@
 
   <mat-form-field>
     <mat-label>Start date time</mat-label>
-    <input matInput [min]="currentDate" [matDatepicker]="startDateTimePicker" formControlName="startDateTime" />
+    <input matInput [max]="endDateTimeValue" [matDatepicker]="startDateTimePicker" formControlName="startDateTime" />
     <mat-datepicker-toggle matSuffix [for]="startDateTimePicker"></mat-datepicker-toggle>
     <mat-datepicker #startDateTimePicker></mat-datepicker>
   </mat-form-field>

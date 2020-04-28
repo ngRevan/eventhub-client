@@ -7,7 +7,7 @@
   </mat-list-item>
 </mat-list>
 
-<mat-nav-list *ngIf="events$ | async as events">
+<mat-nav-list *ngIf="eventViews$ | async as events">
   <div mat-subheader>Current Events</div>
   <a *ngFor="let event of events" mat-list-item [routerLink]="['/events', event.id]">
     {{ event.name }}

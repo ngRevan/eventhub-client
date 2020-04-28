@@ -14,7 +14,7 @@ export class RedirectAuthorizedGuard implements CanActivate {
     return this.oidcSecurityService.getIsAuthorized().pipe(
       map(isAuthorized => {
         if (isAuthorized) {
-          return this.router.createUrlTree(['/home']);
+          return this.router.createUrlTree(['/events']);
         } else {
           return true;
         }

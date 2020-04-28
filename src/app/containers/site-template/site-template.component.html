@@ -12,7 +12,7 @@
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" [opened]="true">
-    <app-navigation></app-navigation>
+    <router-outlet name="sidenav-content"></router-outlet>
   </mat-sidenav>
 
   <mat-sidenav-content>

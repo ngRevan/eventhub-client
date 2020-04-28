@@ -1,8 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { EventView } from 'src/app/core/models/event-view';
-import { EventService } from 'src/app/core/services/event.service';
 import { EventFormComponent } from 'src/app/events/components/event-form/event-form.component';
+import { v4 as uuidv4 } from 'uuid';
+
+import { EventActions } from '../../actions';
+
+export const eventDialogCreateId = 'app-event-dialog-create';
 
 @Component({
   selector: 'app-event-dialog-create',
@@ -14,14 +18,18 @@ export class EventDialogCreateComponent implements OnInit {
   @ViewChild(EventFormComponent)
   eventForm: EventFormComponent;
 
-  constructor(
-    private readonly service: EventService,
-    public readonly dialogRef: MatDialogRef<EventDialogCreateComponent>
-  ) {}
+  constructor(private readonly store: Store) {}
 
   ngOnInit(): void {}
 
   onSubmit(model: EventView): void {
-    this.service.create(model).subscribe(() => this.dialogRef.close());
+    this.store.dispatch(
+      EventActions.createEvent({
+        eventView: {
+          ...model,
+          id: uuidv4(),
+        },
+      })
+    );
   }
 }

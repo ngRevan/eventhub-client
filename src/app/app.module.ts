@@ -1,8 +1,11 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {
   AuthModule,
   ConfigResult,
@@ -10,31 +13,23 @@ import {
   OidcSecurityService,
   OpenIdConfiguration,
 } from 'angular-auth-oidc-client';
+import { environment } from 'src/environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AboutPageComponent } from './containers/about-page/about-page.component';
 import { HomePageComponent } from './containers/home-page/home-page.component';
-import { NavigationComponent } from './containers/navigation/navigation.component';
 import { SignInOidcPageComponent } from './containers/sign-in-oidc-page/sign-in-oidc-page.component';
 import { SiteTemplateComponent } from './containers/site-template/site-template.component';
-import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomePageComponent,
-    SignInOidcPageComponent,
-    SiteTemplateComponent,
-    AboutPageComponent,
-    NavigationComponent,
-  ],
+  declarations: [AppComponent, HomePageComponent, SignInOidcPageComponent, SiteTemplateComponent, AboutPageComponent],
   imports: [
     BrowserModule,
     SharedModule,
@@ -44,6 +39,12 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     BrowserAnimationsModule,
     MatNativeDateModule,
     CoreModule.forRoot(),
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot(),
+    StoreDevtoolsModule.instrument({
+      name: 'EventHub',
+      logOnly: environment.production,
+    }),
   ],
   providers: [
     OidcConfigService,
@@ -54,7 +55,6 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
       multi: true,
     },
     OidcSecurityService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'de-CH' },
   ],
   bootstrap: [AppComponent],
@@ -69,7 +69,7 @@ export class AppModule {
         response_type: 'code',
         scope: 'openid profile EventHub.Web.ApiAPI',
         post_logout_redirect_uri: 'https://localhost:4200/signout-callback-oidc',
-        post_login_route: '/home',
+        post_login_route: '/events',
         start_checksession: false,
         silent_renew: false,
         log_console_warning_active: true,

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HubConnectionBuilder } from '@microsoft/signalr';
+import { HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { MessageView } from '../models/message-view';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,37 +13,37 @@ export class ChatHubService {
     .withUrl(`${environment.apiUrl}/hubs/chat`, { accessTokenFactory: () => this.oidcSecurityService.getToken() })
     .build();
 
-  private readonly messagesSubject = new Subject<MessageView>();
+  readonly onMessageReceived = new Subject<MessageView>();
+
+  get connectionState(): HubConnectionState {
+    return this.connection.state;
+  }
 
   constructor(private oidcSecurityService: OidcSecurityService) {
     this.connection.on('receiveMessage', (message: MessageView) => this.onMessageRecieved(message));
   }
 
-  getMessages(): Observable<MessageView> {
-    return this.messagesSubject.asObservable();
+  connect(): Observable<void> {
+    return from(this.connection.start());
   }
 
-  async connect(): Promise<void> {
-    await this.connection.start();
+  joinEventChat(eventId: string): Observable<void> {
+    return from(this.connection.send('joinEventChat', eventId));
   }
 
-  async joinEventChat(eventId: string): Promise<void> {
-    await this.connection.send('joinEventChat', eventId);
+  sendMessage(eventId: string, message: string): Observable<void> {
+    return from(this.connection.send('sendMessage', eventId, message));
   }
 
-  async sendMessage(eventId: string, message: string): Promise<void> {
-    await this.connection.send('sendMessage', eventId, message);
+  leaveEventChat(eventId: string): Observable<void> {
+    return from(this.connection.send('leaveEventChat', eventId));
   }
 
-  async leaveEventChat(eventId: string): Promise<void> {
-    await this.connection.send('leaveEventChat', eventId);
-  }
-
-  async disconnect(): Promise<void> {
-    await this.connection.stop();
+  disconnect(): Observable<void> {
+    return from(this.connection.stop());
   }
 
   private onMessageRecieved(message: MessageView): void {
-    this.messagesSubject.next(message);
+    this.onMessageReceived.next(message);
   }
 }

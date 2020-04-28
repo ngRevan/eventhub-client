@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { EventView } from 'src/app/core/models/event-view';
 import { EventService } from 'src/app/core/services/event.service';
-import { EventDialogCreateComponent } from 'src/app/events/containers/event-dialog-create/event-dialog-create.component';
+
+import { EventActions } from '../../actions';
+import { getMemberEvents } from '../../reducers';
 
 @Component({
   selector: 'app-navigation',
@@ -12,15 +14,15 @@ import { EventDialogCreateComponent } from 'src/app/events/containers/event-dial
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent implements OnInit {
-  events$: Observable<EventView[]>;
+  eventViews$ = this.store.select(getMemberEvents);
 
-  constructor(private readonly dialog: MatDialog, private readonly eventService: EventService) {}
+  constructor(private readonly store: Store) {}
 
   ngOnInit(): void {
-    this.events$ = this.eventService.getEvents();
+    this.store.dispatch(EventActions.loadMemberEvents());
   }
 
   openEventFormDialog() {
-    this.dialog.open(EventDialogCreateComponent);
+    this.store.dispatch(EventActions.openCreateDialog());
   }
 }

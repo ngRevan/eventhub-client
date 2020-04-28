@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Subject, Observable } from 'rxjs';
-import { distinctUntilChanged, filter, map, takeUntil, switchMap } from 'rxjs/operators';
-import { MessageView } from 'src/app/core/models/message-view';
-import { ChatHubService } from 'src/app/core/services/chat-hub.service';
-import { EventService } from 'src/app/core/services/event.service';
-import { MessageListComponent } from 'src/app/events/components/message-list/message-list.component';
+import { select, Store } from '@ngrx/store';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { Subject } from 'rxjs';
+import { filter, takeUntil, map } from 'rxjs/operators';
+import { MessageListComponent } from 'src/app/events/components/message-list/message-list.component';
+
+import { ChatActions } from '../../actions';
+import { eventSelectors, getChatMessages } from '../../reducers';
 
 @Component({
   selector: 'app-event-chat-page',
@@ -15,84 +15,37 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventChatPageComponent implements OnInit, OnDestroy {
-  private currentEventId = '';
-  private pageNumber = 1;
-  private readonly pageSize = 50;
   private readonly destroy$ = new Subject<void>();
 
-  readonly messages$ = new BehaviorSubject<MessageView[]>([]);
-  readonly currentUserId$ = new BehaviorSubject<string>('');
+  readonly messages$ = this.store.select(getChatMessages);
+  readonly currentUserId$ = this.securityService.getUserData().pipe(map(data => data.sub));
 
   @ViewChild(MessageListComponent, { static: true, read: ElementRef })
   scrollableContainer: ElementRef<HTMLElement>;
 
-  constructor(
-    private eventService: EventService,
-    private chatHubService: ChatHubService,
-    private securityService: OidcSecurityService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private readonly store: Store, private readonly securityService: OidcSecurityService) {}
 
-  async ngOnInit(): Promise<void> {
-    await this.chatHubService.connect();
-
-    this.securityService
-      .getUserData<{ sub: string }>()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => this.currentUserId$.next(data.sub));
-
-    this.chatHubService
-      .getMessages()
+  ngOnInit(): void {
+    this.store
       .pipe(
-        takeUntil(this.destroy$),
-        filter(message => message.eventId === this.currentEventId)
+        select(eventSelectors.getSelectedId),
+        filter((id): id is string => !!id),
+        takeUntil(this.destroy$)
       )
-      .subscribe(message => {
-        this.messages$.next([...this.messages$.value, message]);
+      .subscribe(() => {
+        this.store.dispatch(ChatActions.loadMessages());
       });
 
-    this.route.paramMap
-      .pipe(
-        takeUntil(this.destroy$),
-        map(params => params.get('eventId') as string),
-        distinctUntilChanged()
-      )
-      .subscribe(eventId => {
-        if (!!this.currentEventId) {
-          this.clear();
-        }
-
-        this.initialize(eventId);
-      });
+    this.store.dispatch(ChatActions.connect());
   }
 
-  sendMessage(message: string): void {
-    this.chatHubService.sendMessage(this.currentEventId, message);
+  sendMessage(text: string): void {
+    this.store.dispatch(ChatActions.sendMessage({ text }));
   }
 
   ngOnDestroy(): void {
-    this.chatHubService.disconnect();
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private gatherMessages(pageNumber: number = 1): void {
-    this.eventService
-      .getEventMessages(this.currentEventId, { pageNumber, pageSize: this.pageSize })
-      .subscribe(result => {
-        this.messages$.next([...result.items, ...this.messages$.value]);
-        this.pageNumber = result.pageNumber;
-      });
-  }
-
-  private initialize(eventId: string): void {
-    this.currentEventId = eventId;
-    this.chatHubService.joinEventChat(eventId);
-    this.gatherMessages();
-  }
-
-  private clear(): void {
-    this.messages$.next([]);
-    this.chatHubService.leaveEventChat(this.currentEventId);
+    this.store.dispatch(ChatActions.disconnect());
   }
 }

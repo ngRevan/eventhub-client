@@ -2,14 +2,12 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
-import { EventView } from 'src/app/core/models/event-view';
+import { Store, select } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, map, takeUntil, take } from 'rxjs/operators';
 import { EventService } from 'src/app/core/services/event.service';
-import {
-  EventDialogUpdateComponent,
-  EventDialogUpdateData,
-} from 'src/app/events/containers/event-dialog-update/event-dialog-update.component';
+import { getSelectedEvent, eventSelectors } from '../../reducers';
+import { EventActions } from '../../actions';
 
 @Component({
   selector: 'app-event-template',
@@ -38,10 +36,11 @@ export class EventTemplateComponent implements OnInit, OnDestroy {
     },
   ];
 
-  eventView$ = new BehaviorSubject<EventView | undefined>(undefined);
+  readonly eventView$ = this.store.select(getSelectedEvent);
 
   constructor(
-    private readonly service: EventService,
+    private readonly store: Store,
+    private readonly eventService: EventService,
     private readonly dialog: MatDialog,
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
@@ -53,26 +52,21 @@ export class EventTemplateComponent implements OnInit, OnDestroy {
       .pipe(
         map(params => params.get('eventId') as string),
         distinctUntilChanged(),
-        switchMap(eventId => this.service.getById(eventId)),
+        map(eventId => EventActions.selectEvent({ id: eventId })),
         takeUntil(this.destroy$)
       )
-      .subscribe(event => {
-        this.eventView$.next(event);
+      .subscribe(action => {
+        this.store.dispatch(action);
       });
   }
 
   onEdit(): void {
-    this.dialog.open<EventDialogUpdateComponent, EventDialogUpdateData>(EventDialogUpdateComponent, {
-      data: {
-        eventView: this.eventView$.value as EventView,
-      },
-    });
+    this.store.dispatch(EventActions.openEditDialog());
   }
 
   onDelete(): void {
-    this.service.delete(this.eventView$.value!.id).subscribe(() => {
-      this.snackBar.open('Event delted', undefined, { duration: 2.5 * 1000 });
-      this.router.navigate(['/']);
+    this.store.pipe(select(eventSelectors.getSelectedId), take(1)).subscribe(id => {
+      this.store.dispatch(EventActions.deleteEvent({ id: id! }));
     });
   }
 

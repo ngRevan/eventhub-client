@@ -1,6 +1,6 @@
 <h1 mat-dialog-header>Update event</h1>
 <mat-dialog-content>
-  <app-event-form #eventForm [eventView]="data.eventView" (eventFormSubmit)="onSubmit($event)"></app-event-form>
+  <app-event-form #eventForm [eventView]="eventView$ | async" (eventFormSubmit)="onSubmit($event)"> </app-event-form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
