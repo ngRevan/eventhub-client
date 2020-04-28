@@ -5,6 +5,7 @@
     [messages]="messages$ | async"
     [currentUserId]="currentUserId$ | async"
   ></app-message-list>
+
   <mat-card-footer>
     <app-message-form (send)="sendMessage($event)"></app-message-form>
   </mat-card-footer>

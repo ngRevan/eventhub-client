@@ -4,61 +4,61 @@ $participant-background: mat-color($primary-palette, 100);
 $owner-background: mat-color($secondary-palette, 100);
 $muted-text: mat-color($secondary-palette, 600);
 
-.message-entry {
-  position: relative;
-  border-radius: 7.5px;
-  padding: 0.25rem 0.5rem;
-
-  &::before {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-  }
-
-  &.owner {
-    margin-left: auto;
-    margin-right: 12px;
-    border-top-right-radius: 0;
-    background-color: $owner-background;
-
-    &::before {
-      left: 100%;
-      top: 0;
-      border-left: 8px solid $owner-background;
-      border-bottom: 12px solid transparent;
-    }
-  }
-
-  &.participant {
-    margin-left: 12px;
-    border-top-left-radius: 0;
-    background-color: $participant-background;
-
-    &::before {
-      right: 100%;
-      top: 0;
-      border-bottom: 12px solid transparent;
-      border-right: 8px solid $participant-background;
-    }
-  }
-
-  .text {
-    padding: 0.2rem 0;
-  }
-
-  .username,
-  .created-at {
-    color: $muted-text;
-    font-size: 0.6rem;
-    line-height: 0.6rem;
-  }
-
-  .created-at {
-    text-align: right;
-  }
-}
-
 :host {
   padding: 8px;
+
+  .message-entry {
+    position: relative;
+    border-radius: 7.5px;
+    padding: 0.25rem 0.5rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
+
+    &.owner {
+      margin-left: auto;
+      margin-right: 12px;
+      border-top-right-radius: 0;
+      background-color: $owner-background;
+
+      &::before {
+        left: 100%;
+        top: 0;
+        border-left: 8px solid $owner-background;
+        border-bottom: 12px solid transparent;
+      }
+    }
+
+    &.participant {
+      margin-left: 12px;
+      border-top-left-radius: 0;
+      background-color: $participant-background;
+
+      &::before {
+        right: 100%;
+        top: 0;
+        border-bottom: 12px solid transparent;
+        border-right: 8px solid $participant-background;
+      }
+    }
+
+    .text {
+      padding: 0.2rem 0;
+    }
+
+    .username,
+    .created-at {
+      color: $muted-text;
+      font-size: 0.6rem;
+      line-height: 0.6rem;
+    }
+
+    .created-at {
+      text-align: right;
+    }
+  }
 }

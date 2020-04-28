@@ -1,9 +1,12 @@
-form {
-  display: flex;
-  flex-direction: row;
-  box-sizing: border-box;
+:host {
+  form {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
 
-  .message-input {
-    flex: 1 1 auto;
+    .message-input {
+      flex: 1 1 auto;
+      padding: 0 0.5rem;
+    }
   }
 }
