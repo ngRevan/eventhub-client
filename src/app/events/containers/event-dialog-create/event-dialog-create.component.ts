@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { EventView } from 'src/app/core/models/event-view';
 import { EventService } from 'src/app/core/services/event.service';
-import { MatDialogRef } from '@angular/material/dialog';
-import { EventFormComponent } from 'src/app/components/event-form/event-form.component';
+import { EventFormComponent } from 'src/app/events/components/event-form/event-form.component';
 
 @Component({
   selector: 'app-event-dialog-create',

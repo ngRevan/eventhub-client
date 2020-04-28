@@ -1,19 +1,19 @@
 import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Input,
-  ViewChildren,
-  QueryList,
-  OnDestroy,
-  ElementRef,
   AfterViewInit,
-  HostListener,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
-import { MessageView } from 'src/app/core/models/message-view';
-import { MessageEntryComponent } from '../message-entry/message-entry.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MessageView } from 'src/app/core/models/message-view';
+
+import { MessageEntryComponent } from '../message-entry/message-entry.component';
 
 @Component({
   selector: 'app-message-list',
