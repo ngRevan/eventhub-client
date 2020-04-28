@@ -72,7 +72,6 @@ export class EventChatPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.chatHubService.disconnect();
-    this.currentUserId$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }
