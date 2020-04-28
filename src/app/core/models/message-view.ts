@@ -4,4 +4,5 @@ export interface MessageView {
   text: string;
   username: string;
   createdAt: string;
+  createdByUserId: string;
 }

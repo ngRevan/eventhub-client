@@ -1,1 +1,5 @@
-<app-message-entry *ngFor="let message of messages" [message]="message"> </app-message-entry>
+<app-message-entry
+  *ngFor="let message of messages"
+  [message]="message"
+  [isOwner]="message.createdByUserId === currentUserId"
+></app-message-entry>

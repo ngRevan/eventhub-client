@@ -1,4 +1,6 @@
 <form [formGroup]="formGroup" (ngSubmit)="sendMessage()">
-  <input class="message-input" placeholder="send a message" [formControl]="messageControl" />
-  <button mat-button [disabled]="!messageControl.value" type="submit" (click)="sendMessage()">Send</button>
+  <input matInput class="message-input" placeholder="send a message" [formControl]="messageControl" />
+  <button mat-button [disabled]="!messageControl.value" color="primary" type="submit" (click)="sendMessage()">
+    Send
+  </button>
 </form>

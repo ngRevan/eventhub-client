@@ -1,1 +1,7 @@
-<p>{{ message.text }}</p>
+<div class="flex row">
+  <div class="message-entry" [ngClass]="isOwner ? 'owner' : 'participant'">
+    <div class="username" *ngIf="!isOwner">{{ message.username }}</div>
+    <div class="text">{{ message.text }}</div>
+    <div class="created-at">{{ message.createdAt | date: 'dd.MM.yyyy HH:mm' }}</div>
+  </div>
+</div>

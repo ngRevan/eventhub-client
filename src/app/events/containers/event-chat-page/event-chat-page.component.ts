@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject, Observable } from 'rxjs';
+import { distinctUntilChanged, filter, map, takeUntil, switchMap } from 'rxjs/operators';
 import { MessageView } from 'src/app/core/models/message-view';
 import { ChatHubService } from 'src/app/core/services/chat-hub.service';
 import { EventService } from 'src/app/core/services/event.service';
 import { MessageListComponent } from 'src/app/events/components/message-list/message-list.component';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-event-chat-page',
@@ -20,6 +21,7 @@ export class EventChatPageComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   readonly messages$ = new BehaviorSubject<MessageView[]>([]);
+  readonly currentUserId$ = new BehaviorSubject<string>('');
 
   @ViewChild(MessageListComponent, { static: true, read: ElementRef })
   scrollableContainer: ElementRef<HTMLElement>;
@@ -27,11 +29,17 @@ export class EventChatPageComponent implements OnInit, OnDestroy {
   constructor(
     private eventService: EventService,
     private chatHubService: ChatHubService,
+    private securityService: OidcSecurityService,
     private route: ActivatedRoute
   ) {}
 
   async ngOnInit(): Promise<void> {
     await this.chatHubService.connect();
+
+    this.securityService
+      .getUserData<{ sub: string }>()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => this.currentUserId$.next(data.sub));
 
     this.chatHubService
       .getMessages()
@@ -64,6 +72,7 @@ export class EventChatPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.chatHubService.disconnect();
+    this.currentUserId$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }

@@ -29,6 +29,9 @@ export class MessageListComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   messages: MessageView[];
 
+  @Input()
+  currentUserId: string;
+
   @ViewChildren(MessageEntryComponent)
   messageEntries: QueryList<MessageEntryComponent>;
 
