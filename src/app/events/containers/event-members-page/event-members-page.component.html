@@ -1,1 +1,8 @@
-<p>event-members-page works!</p>
+<ng-container *ngIf="eventMembers$ | async as eventMembers; else loading">
+  <div *ngFor="let eventMember of eventMembers">
+    {{ eventMember.username }}
+  </div>
+</ng-container>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>
