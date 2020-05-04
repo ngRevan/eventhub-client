@@ -24,10 +24,9 @@ export const eventMemberReducer = createReducer(
     eventId,
   })),
 
-  on(EventMemberActions.loadMembersSuccess, (state, { eventMemberViews }) => ({
-    ...adapter.upsertMany(eventMemberViews, state),
-    ids: eventMemberViews.map(entity => entity.userId),
-  }))
+  on(EventMemberActions.loadMembersSuccess, (state, { eventMemberViews }) =>
+    adapter.upsertMany(eventMemberViews, state)
+  )
 );
 
 export const getEventId = (state: EventMemberState) => state.eventId;

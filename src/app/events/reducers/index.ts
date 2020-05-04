@@ -50,7 +50,7 @@ export const getMemberEvents = createSelector(
 export const getEventMemberState = createSelector(getEventsFeatureState, state => state.eventMember);
 export const eventMemberSelector = getEventMemberSelectors(getEventMemberState);
 export const getEventMembers = createSelector(
-  eventMemberSelector.selectEntities,
+  eventMemberSelector.selectAll,
   eventMemberSelector.getEventId,
-  (entities, id) => (id && entities[id]) || undefined
+  entities => entities
 );

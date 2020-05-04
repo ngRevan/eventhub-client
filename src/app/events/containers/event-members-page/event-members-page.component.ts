@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getEventMembers } from '../../reducers';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil, map, distinctUntilChanged } from 'rxjs/operators';
 import { EventMemberActions } from '../../actions';
 import { ActivatedRoute } from '@angular/router';
+import { EventMemberView } from 'src/app/core/models/event-member-view';
 
 @Component({
   selector: 'app-event-members-page',
@@ -15,9 +16,9 @@ import { ActivatedRoute } from '@angular/router';
 export class EventMembersPageComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly route: ActivatedRoute, private readonly store: Store) {}
+  eventMembers$ = this.store.select(getEventMembers);
 
-  readonly eventMembers$ = this.store.select(getEventMembers);
+  constructor(private readonly route: ActivatedRoute, private readonly store: Store) {}
 
   ngOnInit(): void {
     this.route.paramMap
