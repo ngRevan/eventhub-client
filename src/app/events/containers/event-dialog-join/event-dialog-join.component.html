@@ -9,6 +9,9 @@
       <small matLine>
         {{ eventView.startDate | date: 'short' }}&nbsp;-&nbsp;{{ eventView.endDate | date: 'short' }}
       </small>
+      <button type="button" mat-icon-button (click)="onJoin(eventView.id)">
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
     </mat-list-item>
   </mat-list>
 </ng-container>

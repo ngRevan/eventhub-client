@@ -3,6 +3,7 @@ import { createReducer, createSelector, on } from '@ngrx/store';
 import { EventView } from 'src/app/core/models/event-view';
 
 import { EventActions } from '../actions';
+import { stat } from 'fs';
 
 export interface EventState extends EntityState<EventView> {
   selectedId: string | undefined;

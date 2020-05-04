@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { getNotMemberEvents } from '../../reducers';
+import { Store, select } from '@ngrx/store';
+import { getNotMemberEvents, eventSelectors } from '../../reducers';
 import { EventActions } from '../../actions';
+import { take } from 'rxjs/operators';
 
 export const eventDialogJoinId = 'app-event-dialog-join';
 
@@ -18,5 +19,9 @@ export class EventDialogJoinComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(EventActions.loadNotMemberEvents());
+  }
+
+  onJoin(eventId: string): void {
+    this.store.dispatch(EventActions.joinEvent({ id: eventId }));
   }
 }

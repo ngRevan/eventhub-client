@@ -54,6 +54,10 @@ export class EventService {
     return this.http.delete<void>(`${this.apiUrl}${eventId}`);
   }
 
+  join(eventId: string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}${eventId}/Join`, null);
+  }
+
   getEventMessages(
     eventId: string,
     paging?: { pageSize: number; pageNumber: number }

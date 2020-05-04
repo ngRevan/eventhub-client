@@ -50,6 +50,18 @@ export class EventEffects {
     )
   );
 
+  join$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EventActions.joinEvent),
+      switchMap(({ id }) =>
+        this.eventService.join(id).pipe(
+          map(() => EventActions.joinEventSuccess()),
+          catchError(() => of(EventActions.joinEventFailure()))
+        )
+      )
+    )
+  );
+
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EventActions.createEvent),
@@ -156,7 +168,7 @@ export class EventEffects {
 
   reloadMemberEvents$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(EventActions.createEventSuccess, EventActions.deleteEventSuccess),
+      ofType(EventActions.createEventSuccess, EventActions.deleteEventSuccess, EventActions.joinEventSuccess),
       map(() => EventActions.loadMemberEvents())
     )
   );
@@ -189,32 +201,6 @@ export class EventEffects {
     { dispatch: false }
   );
 
-  openJoinDialog$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(EventActions.openJoinDialog),
-        tap(() => {
-          const dialogRef = this.dialog.open(EventDialogJoinComponent);
-          dialogRef.afterClosed().subscribe(() => this.store.dispatch(EventActions.closeJoinDialog()));
-        })
-      ),
-    { dispatch: false }
-  );
-
-  closeJoinDialog$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(EventActions.closeJoinDialog),
-        tap(() => {
-          const dialogRef = this.dialog.getDialogById(eventDialogJoinId);
-          if (dialogRef) {
-            dialogRef.close();
-          }
-        })
-      ),
-    { dispatch: false }
-  );
-
   openEditDialog$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -235,6 +221,32 @@ export class EventEffects {
         ofType(EventActions.closeEditDialog, EventActions.updateEventSuccess, EventActions.updateEventFailure),
         tap(() => {
           const dialogRef = this.dialog.getDialogById(eventDialogUpdateId);
+          if (dialogRef) {
+            dialogRef.close();
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
+  openJoinDialog$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EventActions.openJoinDialog),
+        tap(() => {
+          const dialogRef = this.dialog.open(EventDialogJoinComponent);
+          dialogRef.afterClosed().subscribe(() => this.store.dispatch(EventActions.closeJoinDialog()));
+        })
+      ),
+    { dispatch: false }
+  );
+
+  closeJoinDialog$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EventActions.closeJoinDialog, EventActions.joinEventSuccess, EventActions.joinEventFailure),
+        tap(() => {
+          const dialogRef = this.dialog.getDialogById(eventDialogJoinId);
           if (dialogRef) {
             dialogRef.close();
           }
