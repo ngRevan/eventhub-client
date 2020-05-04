@@ -1,4 +1,4 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { EventMemberView } from 'src/app/core/models/event-member-view';
 import { createReducer, on, createSelector } from '@ngrx/store';
 
@@ -8,7 +8,9 @@ export interface EventMemberState extends EntityState<EventMemberView> {
   eventId: string | undefined;
 }
 
-const adapter = createEntityAdapter<EventMemberView>();
+const adapter: EntityAdapter<EventMemberView> = createEntityAdapter<EventMemberView>({
+  selectId: (eventMemberView: EventMemberView) => eventMemberView.userId,
+});
 
 const initialState: EventMemberState = adapter.getInitialState({
   eventId: undefined,
@@ -22,9 +24,10 @@ export const eventMemberReducer = createReducer(
     eventId,
   })),
 
-  on(EventMemberActions.loadMembersSuccess, (state, { eventMemberViews }) =>
-    adapter.upsertMany(eventMemberViews, state)
-  )
+  on(EventMemberActions.loadMembersSuccess, (state, { eventMemberViews }) => ({
+    ...adapter.upsertMany(eventMemberViews, state),
+    ids: eventMemberViews.map(entity => entity.userId),
+  }))
 );
 
 export const getEventId = (state: EventMemberState) => state.eventId;

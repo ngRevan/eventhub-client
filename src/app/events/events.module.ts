@@ -20,6 +20,7 @@ import { ChatEffects } from './effects/chat.effects';
 import { EventEffects } from './effects/event.effects';
 import { EventsRoutingModule } from './events-routing.module';
 import { eventsFeatureStateKey, eventsReducers } from './reducers';
+import { EventMemberEffects } from './effects/event-member.effects';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { eventsFeatureStateKey, eventsReducers } from './reducers';
     SharedModule,
     EventsRoutingModule,
     StoreModule.forFeature(eventsFeatureStateKey, eventsReducers),
-    EffectsModule.forFeature([EventEffects, ChatEffects]),
+    EffectsModule.forFeature([EventEffects, ChatEffects, EventMemberEffects]),
   ],
   providers: [],
 })
