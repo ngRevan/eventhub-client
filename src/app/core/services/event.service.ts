@@ -26,6 +26,14 @@ export class EventService {
     });
   }
 
+  getNotMemberEvents(): Observable<EventView[]> {
+    return this.http.get<EventView[]>(this.apiUrl, {
+      params: {
+        isMember: 'false',
+      },
+    });
+  }
+
   getById(eventId: string): Observable<EventView> {
     return this.http.get<EventView>(`${this.apiUrl}${eventId}`);
   }

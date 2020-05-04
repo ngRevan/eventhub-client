@@ -25,4 +25,8 @@ export class NavigationComponent implements OnInit {
   openEventFormDialog() {
     this.store.dispatch(EventActions.openCreateDialog());
   }
+
+  openEventJoinDialog() {
+    this.store.dispatch(EventActions.openJoinDialog());
+  }
 }

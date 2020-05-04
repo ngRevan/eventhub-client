@@ -1,0 +1,14 @@
+<h1 mat-dialog-header>Take part in an event</h1>
+
+<ng-container *ngIf="eventViews$ | async as eventViews">
+  <mat-list>
+    <mat-list-item *ngFor="let eventView of eventViews">
+      <p matLine>
+        <strong>{{ eventView.name }}</strong>
+      </p>
+      <small matLine>
+        {{ eventView.startDate | date: 'short' }}&nbsp;-&nbsp;{{ eventView.endDate | date: 'short' }}
+      </small>
+    </mat-list-item>
+  </mat-list>
+</ng-container>

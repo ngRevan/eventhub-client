@@ -17,6 +17,10 @@ import {
   EventDialogUpdateComponent,
   eventDialogUpdateId,
 } from '../containers/event-dialog-update/event-dialog-update.component';
+import {
+  EventDialogJoinComponent,
+  eventDialogJoinId,
+} from '../containers/event-dialog-join/event-dialog-join.component';
 
 @Injectable()
 export class EventEffects {
@@ -31,6 +35,18 @@ export class EventEffects {
           catchError(() => of(EventActions.loadMemberEventsFailure()))
         );
       })
+    )
+  );
+
+  loadNotMemberEvents$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EventActions.loadNotMemberEvents),
+      switchMap(() =>
+        this.eventService.getNotMemberEvents().pipe(
+          map(results => EventActions.loadNotMemberEventsSuccess({ eventViews: results })),
+          catchError(() => of(EventActions.loadNotMemberEventsFailure()))
+        )
+      )
     )
   );
 
@@ -165,6 +181,32 @@ export class EventEffects {
         ofType(EventActions.closeCreateDialog, EventActions.createEventSuccess, EventActions.createEventFailure),
         tap(() => {
           const dialogRef = this.dialog.getDialogById(eventDialogCreateId);
+          if (dialogRef) {
+            dialogRef.close();
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
+  openJoinDialog$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EventActions.openJoinDialog),
+        tap(() => {
+          const dialogRef = this.dialog.open(EventDialogJoinComponent);
+          dialogRef.afterClosed().subscribe(() => this.store.dispatch(EventActions.closeJoinDialog()));
+        })
+      ),
+    { dispatch: false }
+  );
+
+  closeJoinDialog$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EventActions.closeJoinDialog),
+        tap(() => {
+          const dialogRef = this.dialog.getDialogById(eventDialogJoinId);
           if (dialogRef) {
             dialogRef.close();
           }

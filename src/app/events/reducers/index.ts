@@ -45,6 +45,11 @@ export const getMemberEvents = createSelector(
   eventSelectors.getMemberEventIds,
   (entities, ids) => ids.map(id => entities[id])
 );
+export const getNotMemberEvents = createSelector(
+  eventSelectors.selectEntities,
+  eventSelectors.getNotMemberEventIds,
+  (entities, ids) => ids.map(id => entities[id])
+);
 
 /* Event Members */
 export const getEventMemberState = createSelector(getEventsFeatureState, state => state.eventMember);
