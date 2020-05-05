@@ -46,7 +46,7 @@ export const loadNotMemberEventsSuccess = createAction(
 export const loadNotMemberEventsFailure = createAction('[Events] Load Not Member Events Failure');
 
 export const joinEvent = createAction('[Events] Join', props<{ id: string }>());
-export const joinEventSuccess = createAction('[Events] Join Success');
+export const joinEventSuccess = createAction('[Events] Join Success', props<{ id: string }>());
 export const joinEventFailure = createAction('[Events] Join Failure');
 
 export const leaveEvent = createAction('[Events] Leave', props<{ id: string }>());

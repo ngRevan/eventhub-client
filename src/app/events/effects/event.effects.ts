@@ -62,10 +62,10 @@ export class EventEffects {
     )
   );
 
-  redirectCreate$ = createEffect(
+  redirectJoinOrCreate$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(EventActions.createEventSuccess),
+        ofType(EventActions.createEventSuccess, EventActions.joinEventSuccess),
         tap(({ id }) => {
           this.router.navigate(['events', id]);
         })
@@ -123,20 +123,11 @@ export class EventEffects {
       ofType(EventActions.joinEvent),
       switchMap(({ id }) =>
         this.eventService.join(id).pipe(
-          map(() => EventActions.joinEventSuccess()),
+          map(() => EventActions.joinEventSuccess({ id })),
           catchError(() => of(EventActions.joinEventFailure()))
         )
       )
     )
-  );
-
-  redirectJoin$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(EventActions.joinEventSuccess),
-        tap(() => this.router.navigate(['events']))
-      ),
-    { dispatch: false }
   );
 
   joinFailureSnackBar$ = createEffect(
