@@ -44,6 +44,8 @@ export const eventReducer = createReducer(
     notMemberEventIds: eventViews.map(e => e.id),
   })),
 
+  // on(EventActions.leaveEventSuccess, (state, { id }) => adapter.removeOne(id, state)),
+
   on(EventActions.deleteEventSuccess, (state, { id }) => adapter.removeOne(id, state))
 );
 

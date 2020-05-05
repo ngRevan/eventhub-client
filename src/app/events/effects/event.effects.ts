@@ -50,18 +50,6 @@ export class EventEffects {
     )
   );
 
-  join$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(EventActions.joinEvent),
-      switchMap(({ id }) =>
-        this.eventService.join(id).pipe(
-          map(() => EventActions.joinEventSuccess()),
-          catchError(() => of(EventActions.joinEventFailure()))
-        )
-      )
-    )
-  );
-
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EventActions.createEvent),
@@ -130,6 +118,65 @@ export class EventEffects {
     { dispatch: false }
   );
 
+  join$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EventActions.joinEvent),
+      switchMap(({ id }) =>
+        this.eventService.join(id).pipe(
+          map(() => EventActions.joinEventSuccess()),
+          catchError(() => of(EventActions.joinEventFailure()))
+        )
+      )
+    )
+  );
+
+  redirectJoin$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EventActions.joinEventSuccess),
+        tap(() => this.router.navigate(['events']))
+      ),
+    { dispatch: false }
+  );
+
+  joinFailureSnackBar$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EventActions.joinEventFailure),
+        tap(() => {
+          this.snackBar.open('Unable to join event', undefined, {
+            duration: 6000,
+          });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  leave$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EventActions.leaveEvent),
+      switchMap(({ id }) =>
+        this.eventService.leave(id).pipe(
+          map(() => EventActions.leaveEventSuccess()),
+          catchError(() => of(EventActions.leaveEventFailure()))
+        )
+      )
+    )
+  );
+
+  leaveFailureSnackBar$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EventActions.leaveEventFailure),
+        tap(() => {
+          this.snackBar.open('Unable to leave event', undefined, {
+            duration: 6000,
+          });
+        })
+      ),
+    { dispatch: false }
+  );
+
   delete$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EventActions.deleteEvent),
@@ -142,10 +189,10 @@ export class EventEffects {
     )
   );
 
-  redirectDelete$ = createEffect(
+  redirectLeaveOrDelete$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(EventActions.deleteEventSuccess),
+        ofType(EventActions.leaveEventSuccess, EventActions.deleteEventSuccess),
         tap(() => {
           this.router.navigate(['events']);
         })
@@ -168,7 +215,12 @@ export class EventEffects {
 
   reloadMemberEvents$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(EventActions.createEventSuccess, EventActions.deleteEventSuccess, EventActions.joinEventSuccess),
+      ofType(
+        EventActions.createEventSuccess,
+        EventActions.deleteEventSuccess,
+        EventActions.joinEventSuccess,
+        EventActions.leaveEventSuccess
+      ),
       map(() => EventActions.loadMemberEvents())
     )
   );
@@ -234,7 +286,7 @@ export class EventEffects {
       this.actions$.pipe(
         ofType(EventActions.openJoinDialog),
         tap(() => {
-          const dialogRef = this.dialog.open(EventDialogJoinComponent);
+          const dialogRef = this.dialog.open(EventDialogJoinComponent, { id: eventDialogJoinId });
           dialogRef.afterClosed().subscribe(() => this.store.dispatch(EventActions.closeJoinDialog()));
         })
       ),

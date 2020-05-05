@@ -64,6 +64,12 @@ export class EventTemplateComponent implements OnInit, OnDestroy {
     this.store.dispatch(EventActions.openEditDialog());
   }
 
+  onLeave(): void {
+    this.store.pipe(select(eventSelectors.getSelectedId), take(1)).subscribe(id => {
+      this.store.dispatch(EventActions.leaveEvent({ id: id! }));
+    });
+  }
+
   onDelete(): void {
     this.store.pipe(select(eventSelectors.getSelectedId), take(1)).subscribe(id => {
       this.store.dispatch(EventActions.deleteEvent({ id: id! }));
