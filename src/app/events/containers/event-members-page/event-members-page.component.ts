@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getEventMembers } from '../../reducers';
-import { Subject, Observable } from 'rxjs';
-import { takeUntil, map, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { EventMemberActions } from '../../actions';
 import { ActivatedRoute } from '@angular/router';
-import { EventMemberView } from 'src/app/core/models/event-member-view';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-event-members-page',
@@ -16,9 +16,17 @@ import { EventMemberView } from 'src/app/core/models/event-member-view';
 export class EventMembersPageComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
-  eventMembers$ = this.store.select(getEventMembers);
+  readonly eventMembers$ = this.store.select(getEventMembers);
+  readonly currentUserId$ = this.securityService.getUserData().pipe(
+    filter(data => !!data),
+    map(data => data.sub)
+  );
 
-  constructor(private readonly route: ActivatedRoute, private readonly store: Store) {}
+  constructor(
+    private readonly securityService: OidcSecurityService,
+    private readonly route: ActivatedRoute,
+    private readonly store: Store
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap

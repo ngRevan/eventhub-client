@@ -1,11 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, take } from 'rxjs/operators';
-import { EventService } from 'src/app/core/services/event.service';
 import { getSelectedEvent, eventSelectors } from '../../reducers';
 import { EventActions } from '../../actions';
 
@@ -27,10 +24,6 @@ export class EventTemplateComponent implements OnInit, OnDestroy {
       label: 'Chat',
     },
     {
-      path: 'resources',
-      label: 'Resources',
-    },
-    {
       path: 'members',
       label: 'Members',
     },
@@ -38,14 +31,7 @@ export class EventTemplateComponent implements OnInit, OnDestroy {
 
   readonly eventView$ = this.store.select(getSelectedEvent);
 
-  constructor(
-    private readonly store: Store,
-    private readonly eventService: EventService,
-    private readonly dialog: MatDialog,
-    private readonly snackBar: MatSnackBar,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute
-  ) {}
+  constructor(private readonly store: Store, private readonly route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap

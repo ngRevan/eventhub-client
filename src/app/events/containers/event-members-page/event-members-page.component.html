@@ -1,18 +1,8 @@
-<ng-container *ngIf="eventMembers$ | async as eventMembers; else loading">
-  <div class="flex justify-content-center m-2">
-    <mat-card>
-      <mat-card-title>Members</mat-card-title>
-      <mat-list>
-        <mat-list-item *ngFor="let member of eventMembers">
-          {{ member.username }}
-          <button type="button" mat-icon-button matTooltip="Remove member">
-            <mat-icon>remove_circle_outline</mat-icon>
-          </button>
-        </mat-list-item>
-      </mat-list>
-    </mat-card>
-  </div>
-</ng-container>
-<ng-template #loading>
-  <mat-spinner></mat-spinner>
-</ng-template>
+<div class="flex justify-content-center m-2">
+  <mat-card>
+    <mat-card-title>Members</mat-card-title>
+
+    <app-event-member-list [members]="eventMembers$ | async" [currentUserId]="currentUserId$ | async">
+    </app-event-member-list>
+  </mat-card>
+</div>

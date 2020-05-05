@@ -22,6 +22,7 @@ import { EventsRoutingModule } from './events-routing.module';
 import { eventsFeatureStateKey, eventsReducers } from './reducers';
 import { EventMemberEffects } from './effects/event-member.effects';
 import { EventDialogJoinComponent } from './containers/event-dialog-join/event-dialog-join.component';
+import { EventMemberListComponent } from './components/event-member-list/event-member-list.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { EventDialogJoinComponent } from './containers/event-dialog-join/event-d
     MessageEntryComponent,
     NavigationComponent,
     EventDialogJoinComponent,
+    EventMemberListComponent,
   ],
   imports: [
     SharedModule,

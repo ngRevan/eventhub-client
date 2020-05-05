@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 import { EventView } from 'src/app/core/models/event-view';
-import { EventService } from 'src/app/core/services/event.service';
 
 import { EventActions } from '../../actions';
-import { getMemberEvents } from '../../reducers';
+import { getMemberEvents, eventMemberSelector } from '../../reducers';
+import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navigation',
@@ -14,7 +14,19 @@ import { getMemberEvents } from '../../reducers';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent implements OnInit {
-  eventViews$ = this.store.select(getMemberEvents);
+  readonly today: Date = new Date();
+
+  private readonly eventViews$ = this.store.select(getMemberEvents);
+
+  currentEvents$ = this.eventViews$.pipe(
+    filter(events => !!events),
+    map(events => events.filter(event => !!event && new Date(event.startDate) >= this.today))
+  );
+
+  pastEvents$ = this.eventViews$.pipe(
+    filter(events => !!events),
+    map(events => events.filter(event => !!event && new Date(event.startDate) < this.today))
+  );
 
   constructor(private readonly store: Store) {}
 

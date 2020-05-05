@@ -1,0 +1,12 @@
+<mat-list>
+  <mat-list-item *ngFor="let member of members">
+    <div mat-line>
+      {{ member.username }}
+    </div>
+    <ng-container *ngIf="userIsEventAdmin()">
+      <button type="button" mat-icon-button matTooltip="Remove member">
+        <mat-icon>remove_circle_outline</mat-icon>
+      </button>
+    </ng-container>
+  </mat-list-item>
+</mat-list>
