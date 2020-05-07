@@ -25,7 +25,7 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
-  return () => oidcConfigService.load_using_stsServer('https://localhost:44300');
+  return () => oidcConfigService.load_using_stsServer(environment.apiUrl);
 }
 
 @NgModule({
@@ -61,14 +61,15 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
 })
 export class AppModule {
   constructor(private oidcSecurityService: OidcSecurityService, private oidcConfigService: OidcConfigService) {
+    const host = `${location.protocol}//${location.host}`;
     this.oidcConfigService.onConfigurationLoaded.subscribe((configResult: ConfigResult) => {
       const config: OpenIdConfiguration = {
-        stsServer: 'https://localhost:44300',
-        redirect_url: 'https://localhost:4200/signin-oidc',
+        stsServer: environment.apiUrl,
+        redirect_url: `${host}/signin-oidc`,
         client_id: 'EventHub',
         response_type: 'code',
         scope: 'openid profile EventHub.Web.ApiAPI',
-        post_logout_redirect_uri: 'https://localhost:4200/signout-callback-oidc',
+        post_logout_redirect_uri: `${host}/signout-callback-oidc`,
         post_login_route: '/events',
         start_checksession: false,
         silent_renew: false,

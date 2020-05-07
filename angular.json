@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "app": {
+    "eventhub": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -84,21 +84,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "app:build",
+            "browserTarget": "eventhub:build",
             "ssl": true,
-            "sslCert": "ssl/localhost.crt",
-            "sslKey": "ssl/localhost.key"
+            "sslCert": "ssl/eventhub.ch.crt",
+            "sslKey": "ssl/eventhub.ch.key"
           },
           "configurations": {
             "production": {
-              "browserTarget": "app:build:production"
+              "browserTarget": "eventhub:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "app:build"
+            "browserTarget": "eventhub:build"
           }
         },
         "test": {
@@ -123,7 +123,7 @@
       }
     }
   },
-  "defaultProject": "app",
+  "defaultProject": "eventhub",
   "cli": {
     "analytics": false
   }
