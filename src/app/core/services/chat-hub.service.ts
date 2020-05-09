@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
+
+import { HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
+import { MessagePackHubProtocol } from '@microsoft/signalr-protocol-msgpack';
+
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { MessageView } from '../models/message-view';
 import { Subject, Observable, from } from 'rxjs';
@@ -11,6 +14,7 @@ import { Subject, Observable, from } from 'rxjs';
 export class ChatHubService {
   private readonly connection = new HubConnectionBuilder()
     .withUrl(`${environment.apiUrl}/hubs/chat`, { accessTokenFactory: () => this.oidcSecurityService.getToken() })
+    .withHubProtocol(new MessagePackHubProtocol())
     .build();
 
   readonly onMessageReceived = new Subject<MessageView>();
