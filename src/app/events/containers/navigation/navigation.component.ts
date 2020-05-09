@@ -18,14 +18,14 @@ export class NavigationComponent implements OnInit {
 
   private readonly eventViews$ = this.store.select(getMemberEvents);
 
-  currentEvents$ = this.eventViews$.pipe(
+  readonly currentEvents$ = this.eventViews$.pipe(
     filter(events => !!events),
-    map(events => events.filter(event => !!event && new Date(event.startDate) >= this.today))
+    map(events => events.filter(event => !!event && new Date(event.endDate) >= this.today))
   );
 
-  pastEvents$ = this.eventViews$.pipe(
+  readonly pastEvents$ = this.eventViews$.pipe(
     filter(events => !!events),
-    map(events => events.filter(event => !!event && new Date(event.startDate) < this.today))
+    map(events => events.filter(event => !!event && new Date(event.endDate) < this.today))
   );
 
   constructor(private readonly store: Store) {}
