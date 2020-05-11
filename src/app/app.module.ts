@@ -1,5 +1,7 @@
+import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import deCH from '@angular/common/locales/de-CH';
+import { APP_INITIALIZER, NgModule, LOCALE_ID, Inject } from '@angular/core';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,6 +16,7 @@ import {
   OpenIdConfiguration,
 } from 'angular-auth-oidc-client';
 import { environment } from 'src/environments/environment';
+import moment from 'moment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +26,8 @@ import { SignInOidcPageComponent } from './containers/sign-in-oidc-page/sign-in-
 import { SiteTemplateComponent } from './containers/site-template/site-template.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
+
+registerLocaleData(deCH, 'de-CH');
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   return () => oidcConfigService.load_using_stsServer(environment.apiUrl);
@@ -55,12 +60,19 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
       multi: true,
     },
     OidcSecurityService,
+    { provide: LOCALE_ID, useValue: 'de-CH' },
     { provide: MAT_DATE_LOCALE, useValue: 'de-CH' },
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private oidcSecurityService: OidcSecurityService, private oidcConfigService: OidcConfigService) {
+  constructor(
+    private oidcSecurityService: OidcSecurityService,
+    private oidcConfigService: OidcConfigService,
+    @Inject(LOCALE_ID) locale: string
+  ) {
+    moment.locale(locale);
+
     const host = `${location.protocol}//${location.host}`;
     this.oidcConfigService.onConfigurationLoaded.subscribe((configResult: ConfigResult) => {
       const config: OpenIdConfiguration = {
