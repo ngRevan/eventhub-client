@@ -73,15 +73,14 @@ export class AppModule {
   ) {
     moment.locale(locale);
 
-    const host = `${location.protocol}//${location.host}`;
     this.oidcConfigService.onConfigurationLoaded.subscribe((configResult: ConfigResult) => {
       const config: OpenIdConfiguration = {
         stsServer: environment.apiUrl,
-        redirect_url: `${host}/signin-oidc`,
+        redirect_url: `${location.origin}/signin-oidc`,
         client_id: 'EventHub',
         response_type: 'code',
         scope: 'openid profile EventHub.Web.ApiAPI',
-        post_logout_redirect_uri: `${host}/signout-callback-oidc`,
+        post_logout_redirect_uri: `${location.origin}/signout-callback-oidc`,
         post_login_route: '/events',
         start_checksession: false,
         silent_renew: false,
