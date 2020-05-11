@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, exhaustMap, filter, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ChatHubService } from 'src/app/core/services/chat-hub.service';
 import { EventService } from 'src/app/core/services/event.service';
-
 import { ChatActions } from '../actions';
-import { chatSelectors, eventSelectors } from '../reducers';
+import { eventSelectors } from '../reducers';
 
 @Injectable()
 export class ChatEffects {
@@ -45,30 +45,25 @@ export class ChatEffects {
       ofType(ChatActions.loadMessages),
       withLatestFrom(this.selectedEventId$),
       exhaustMap(([, eventId]) =>
-        this.eventService.getEventMessages(eventId, { pageNumber: 1, pageSize: 50 }).pipe(
-          map(result => ChatActions.loadMessagesSuccess({ result })),
+        this.eventService.getEventMessages(eventId).pipe(
+          map(result => ChatActions.loadMessagesSuccess({ messageViews: result })),
           catchError(() => of(ChatActions.loadMessagesFailure()))
         )
       )
     )
   );
 
-  loadMoreMessages$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ChatActions.loadMessages),
-      withLatestFrom(
-        this.selectedEventId$,
-        this.store.select(chatSelectors.getPageNumber),
-        this.store.select(chatSelectors.getHasNextPage)
+  loadMessagesFailureSnackBar$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ChatActions.loadMessagesFailure),
+        tap(() => {
+          this.snackBar.open('Unable to load messages for event', undefined, {
+            duration: 6000,
+          });
+        })
       ),
-      filter(([, , , hasNextPage]) => hasNextPage),
-      exhaustMap(([, eventId, pageNumber]) =>
-        this.eventService.getEventMessages(eventId, { pageNumber: pageNumber + 1, pageSize: 50 }).pipe(
-          map(result => ChatActions.loadMoreMessagesSuccess({ result })),
-          catchError(() => of(ChatActions.loadMoreMessagesFailure()))
-        )
-      )
-    )
+    { dispatch: false }
   );
 
   sendMessage$ = createEffect(
@@ -98,6 +93,7 @@ export class ChatEffects {
     private readonly actions$: Actions,
     private readonly store: Store,
     private readonly eventService: EventService,
-    private readonly chatHubService: ChatHubService
+    private readonly chatHubService: ChatHubService,
+    private readonly snackBar: MatSnackBar
   ) {}
 }

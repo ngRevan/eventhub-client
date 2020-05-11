@@ -1,9 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { EventView } from '../models/event-view';
-import { PagedListResult } from '../models/paged-list-result';
 import { MessageView } from '../models/message-view';
 
 @Injectable({
@@ -62,17 +61,7 @@ export class EventService {
     return this.http.put<void>(`${this.apiUrl}${eventId}/Leave`, null);
   }
 
-  getEventMessages(
-    eventId: string,
-    paging?: { pageSize: number; pageNumber: number }
-  ): Observable<PagedListResult<MessageView>> {
-    let params = new HttpParams();
-    if (!!paging) {
-      params = params.set('pageSize', paging.pageSize.toString()).set('pageNumber', paging.pageNumber.toString());
-    }
-
-    return this.http.get<PagedListResult<MessageView>>(`${this.apiUrl}${eventId}/messages`, {
-      params,
-    });
+  getEventMessages(eventId: string): Observable<MessageView[]> {
+    return this.http.get<MessageView[]>(`${this.apiUrl}${eventId}/messages`);
   }
 }
